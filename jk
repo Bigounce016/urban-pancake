@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minecraft Fan Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Minecraftia', sans-serif;
+      background: url('https://i.imgur.com/C9y7n5x.png') repeat;
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 4rem;
+      margin-top: 100px;
+      color: #00ff00;
+      text-shadow: 2px 2px #000;
+    }
+
+    p {
+      font-size: 1.5rem;
+      text-shadow: 1px 1px #000;
+    }
+
+    .btn {
+      background-color: #3c8527;
+      color: white;
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      margin: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 2px 2px #000;
+    }
+
+    .btn:hover {
+      background-color: #66bb4a;
+    }
+
+    @font-face {
+      font-family: 'Minecraftia';
+      src: url('https://fonts.cdnfonts.com/s/19867/Minecraftia.woff') format('woff');
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to Minecraft World</h1>
+  <p>Explore. Build. Survive.</p>
+
+  <button class="btn" onclick="alert('Launching Game...')">Play</button>
+  <button class="btn" onclick="alert('Multiplayer Coming Soon!')">Multiplayer</button>
+  <button class="btn" onclick="alert('Settings')">Settings</button>
+
+</body>
+</html>
+\

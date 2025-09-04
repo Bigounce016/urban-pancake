@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Minecraft Builder</title>
+  <style>
+    canvas {
+      border: 2px solid #333;
+      display: block;
+      margin: 0 auto;
+      background-color: #87CEEB;
+    }
+    body {
+      background: #111;
+      color: white;
+      text-align: center;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mini Minecraft Builder</h1>
+  <p>Click to place/remove blocks</p>
+  <canvas id="game" width="640" height="480"></canvas>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+
+    const tileSize = 32;
+    const cols = canvas.width / tileSize;
+    const rows = canvas.height / tileSize;
+
+    // Create 2D grid
+    const grid = [];
+    for (let y = 0; y < rows; y++) {
+      const row = [];
+      for (let x = 0; x < cols; x++) {
+        row.push(null); // Empty
+      }
+      grid.push(row);
+    }
+
+    // Dirt block color
+    function drawBlock(x, y, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+      ctx.strokeStyle = "#000";
+      ctx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
+    }
+
+    function render() {
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          if (grid[y][x]) {
+            drawBlock(x, y, grid[y][x]);
+          } else {
+            ctx.clearRect(x * tileSize, y * tileSize, tileSize, tileSize);
+          }
+        }
+      }
+    }
+
+    // Toggle block on click
+    canvas.addEventListener("click", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) / tileSize);
+      const y = Math.floor((e.clientY - rect.top) / tileSize);
+
+      if (grid[y][x]) {
+        grid[y][x] = null; // Remove block
+      } else {
+        grid[y][x] = "#8B4513"; // Add dirt block
+      }
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
