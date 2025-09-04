@@ -1,1 +1,60 @@
 <!DOCTYPE html>
+<html>
+<head>
+  <title>Image Map Example</title>
+</head>
+<body>
+  <h1>Interactive Image Map</h1>
+  <p>Click on the different areas of the image below:</p>
+
+  <!-- Image with a usemap -->
+  <img src="DO YOUR WORK (1).png" alt="Fast Man" usemap="#example-map" width="500" height="300">
+
+  <!-- Map with clickable areas -->
+  <map name="example-map">
+    <area shape="rect" coords="50,50,150,150" href="https://example.com/feature1" alt="Feature 1">
+    <area shape="circle" coords="300,150,50" href="https://example.com/feature2" alt="Feature 2">
+    <area shape="poly" coords="400,50,450,150,350,150" href="https://example.com/feature3" alt="Feature 3">
+  </map>
+
+  <!-- Article section -->
+  <article>
+    <h2>About the Image</h2>
+    <p>This image represents an interactive map where you can click on different areas to explore features. Each area highlights a specific functionality or section of the website.</p>
+    <p>Use the links to navigate and learn more about each feature.</p>
+    <footer>
+      <p>Image source: <cite>Interactive Design by Fast Man Inc.</cite></p>
+    </footer>
+  </article>
+
+  <!-- Table with <col> -->
+  <h2>Clickable Areas Information</h2>
+<table border="1">
+  <!-- Grouping columns with <colgroup> -->
+  <colgroup>
+    <col style="background-color: #f50000; width: 30%;" span="1">
+    <col style="background-color: #e6f7ff; width: 70%;" span="1">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Area</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Feature 1</td>
+      <td>A rectangular area that links to Feature 1.</td>
+    </tr>
+    <tr>
+      <td>Feature 2</td>
+      <td>A circular area that links to Feature 2.</td>
+    </tr>
+    <tr>
+      <td>Feature 3</td>
+      <td>A polygonal area that links to Feature 3.</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

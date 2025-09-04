@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oregon Trail Lite</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #eef6f9;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+  }
+  h1 {
+    text-align: center;
+    color: #2b5d7a;
+  }
+  #status {
+    background: #dbe9f4;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    font-size: 1.1em;
+  }
+  button {
+    background-color: #2b5d7a;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  button:hover {
+    background-color: #1c3c50;
+  }
+  #messages {
+    min-height: 100px;
+    background: #f0f9ff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-style: italic;
+    color: #444;
+  }
+</style>
+</head>
+<body>
+
+<h1>Oregon Trail Lite</h1>
+
+<div id="status">
+  <p><strong>Day:</strong> <span id="day">1</span></p>
+  <p><strong>Distance to Oregon:</strong> <span id="distance">1000</span> miles</p>
+  <p><strong>Food:</strong> <span id="food">500</span> units</p>
+  <p><strong>Ammo:</strong> <span id="ammo">100</span> bullets</p>
+  <p><strong>Wheels:</strong> <span id="wheels">3</span></p>
+  <p><strong>Oxen:</strong> <span id="oxen">4</span></p>
+  <p><strong>Clothing:</strong> <span id="clothing">5</span></p>
+  <p><strong>Health:</strong> <span id="health">100</span>%</p>
+</div>
+
+<div>
+  <button onclick="travel()">Travel</button>
+  <button onclick="hunt()">Hunt</button>
+  <button onclick="rest()">Rest</button>
+</div>
+
+<div id="messages">Welcome to the Oregon Trail! Choose an action to begin your journey.</div>
+
+<script>
+  let game = {
+    day: 1,
+    distance: 1000,
+    food: 500,
+    ammo: 100,
+    wheels: 3,
+    oxen: 4,
+    clothing: 5,
+    health: 100,
+    speed: 10,
+  };
+
+  function updateStatus() {
+    document.getElementById('day').textContent = game.day;
+    document.getElementById('distance').textContent = game.distance > 0 ? game.distance : 0;
+    document.getElementById('food').textContent = game.food;
+    document.getElementById('ammo').textContent = game.ammo;
+    document.getElementById('wheels').textContent = game.wheels;
+    document.getElementById('oxen').textContent = game.oxen;
+    document.getElementById('clothing').textContent = game.clothing;
+    document.getElementById('health').textContent = game.health > 0 ? game.health : 0;
+  }
+
+  function addMessage(msg) {
+    const messages = document.getElementById('messages');
+    messages.innerHTML = msg;
+  }
+
+  function checkGameOver() {
+    if (game.health <= 0) {
+      addMessage("Your party has perished on the trail. <strong>Game Over.</strong>");
+      disableButtons();
+      return true;
+    }
+    if (game.food <= 0) {
+      addMessage("You ran out of food. Your party has starved. <strong>Game Over.</strong>");
+      disableButtons();
+      return true;
+    }
+    if (game.distance <= 0) {
+      addMessage("Congratulations! You have reached Oregon safely! <strong>You Win!</strong>");
+      disableButtons();
+      return true;
+    }
+    return false;
+  }
+
+  function disableButtons() {
+    document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+  }
+
+  function travel() {
+    if (checkGameOver()) return;
+    let miles = Math.floor(Math.random() * (game.speed * 0.4) + game.speed * 0.8);
+    game.distance -= miles;
+    game.food -= 5;
+    game.day++;
+    addMessage(`You traveled ${miles} miles today.`);
+    randomEvent();
+    updateStatus();
+    checkGameOver();
+  }
+
+  function hunt() {
+    if (checkGameOver()) return;
+    addMessage("You go hunting...");
+    setTimeout(() => {
+      let success = Math.random() < 0.33;
+      if (success && game.ammo >= 10) {
+        let foodFound = Math.floor(Math.random() * 31) + 20; // 20-50 units
+        game.food += foodFound;
+        game.ammo -= 10;
+        addMessage(`Success! You gathered ${foodFound} units of food but used 10 bullets.`);
+      } else if (!success && game.ammo >= 5) {
+        game.ammo -= 5;
+        addMessage("No luck hunting today but used 5 bullets.");
+      } else {
+        addMessage("Not enough ammo to hunt!");
+      }
+      updateStatus();
+      checkGameOver();
+    }, 1000);
+  }
+
+  function rest() {
+    if (checkGameOver()) return;
+    game.day++;
+    let healthGain = Math.floor(Math.random() * 11) + 5; // 5-15 health
+    game.health = Math.min(game.health + healthGain, 100);
+    game.food -= 3;
+    addMessage(`Resting helped your party recover ${healthGain} health.`);
+    updateStatus();
+    checkGameOver();
+  }
+
+  function randomEvent() {
+    let chance = Math.random();
+    if (chance < 0.15) breakdown();
+    else if (chance < 0.25) sickness();
+    else if (chance < 0.35) riverCrossing();
+  }
+
+  function breakdown() {
+    const parts = ['wheels', 'oxen', 'clothing'];
+    let part = parts[Math.floor(Math.random() * parts.length)];
+    addMessage(`Oh no! Your ${part.slice(0, -1)} broke.`);
+    if (game[part] > 0) {
+      game[part]--;
+      addMessage(`You used one ${part.slice(0, -1)} replacement.`);
+    } else {
+      game.health -= 10;
+      addMessage(`No ${part.slice(0, -1)} left to replace! Party health suffers.`);
+    }
+  }
+
+  function sickness() {
+    const illnesses = ['dysentery', 'cholera', 'fever'];
+    let illness = illnesses[Math.floor(Math.random() * illnesses.length)];
+    let damage = Math.floor(Math.random() * 16) + 5; // 5-20 health
+    game.health -= damage;
+    addMessage(`A member of your party has ${illness}! Health decreased by ${damage}.`);
+  }
+
+  function riverCrossing() {
+    let choice = prompt("You reached a river. Do you want to (1) ford the river or (2) wait for ferry? Enter 1 or 2:");
+    if (choice === '1') {
+      let chance = Math.random();
+      if (chance < 0.6) {
+        addMessage("You safely crossed the river.");
+      } else {
+        addMessage("The wagon overturned! Lost some supplies and health.");
+        game.food = Math.max(0, game.food - 20);
+        game.health -= 10;
+      }
+    } else if (choice === '2') {
+      game.day++;
+      addMessage("You waited for the ferry. Lost a day but crossed safely.");
+    } else {
+      game.day++;
+      addMessage("Invalid choice. You lost time indecisively.");
+    }
+  }
+
+  updateStatus();
+</script>
+
+</body>
+</html>
