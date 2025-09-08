@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The WORLD</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>MyTube</h1>
+    <input type="text" placeholder="Search videos...">
+    <button>Search</button>
+  </header>
+  <main>
+    <div class="video-list">
+      <!-- Video thumbnails -->
+    </div>
+  </main>
+</body>
+</html>
